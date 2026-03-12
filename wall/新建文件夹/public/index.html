@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表白墙 - 支持任意文件上传</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #e91e63;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #e91e63;
+        }
+
+        .file-info {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f0f8ff;
+            border-radius: 8px;
+            color: #555;
+            font-size: 0.9em;
+        }
+
+        .preview-container {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .preview-video, .preview-audio {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s;
+            margin-top: 10px;
+        }
+
+        .upload-area:hover {
+            border-color: #e91e63;
+        }
+
+        .upload-area p {
+            color: #888;
+            margin: 10px 0;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        button {
+            background: linear-gradient(45deg, #e91e63, #ff6b9d);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(233, 30, 99, 0.3);
+        }
+
+        .admin-btn {
+            background: linear-gradient(45deg, #4CAF50, #8BC34A);
+            margin-left: 10px;
+        }
+
+        .posts-container {
+            display: grid;
+            gap: 20px;
+        }
+
+        .post {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+            border-left: 5px solid #e91e63;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .announcement {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+            border-left: 5px solid #4CAF50;
+            animation: fadeIn 0.5s ease-in;
+            margin-bottom: 20px;
+            border-radius: 20px;
+            border: 2px solid #4CAF50;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        }
+
+        .system-post {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+            border-left: 5px solid #2196F3;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .announcement .post-header {
+            border-bottom-color: #e8f5e9;
+        }
+
+        .announcement .sender-name {
+            color: #4CAF50;
+        }
+
+        .system-post .sender-name {
+            color: #2196F3;
+        }
+
+        .announcement .post-title {
+            font-size: 1.4em;
+            color: #2E7D32;
+            margin-bottom: 15px;
+            text-align: center;
+            padding: 10px;
+            background: rgba(76, 175, 80, 0.1);
+            border-radius: 8px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .sender-name {
+            font-weight: bold;
+            color: #e91e63;
+            font-size: 1.1em;
+        }
+
+        .post-title {
+            font-weight: bold;
+            color: #4CAF50;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .post-time {
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .post-content {
+            line-height: 1.6;
+            color: #444;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+
+        .attachment-info {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 3px solid #007bff;
+        }
+
+        .attachment-name {
+            font-weight: bold;
+            color: #007bff;
+            word-break: break-all;
+        }
+
+        .attachment-size {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .download-link {
+            display: inline-block;
+            margin-top: 5px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .preview-media {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .preview-media img, .preview-media video, .preview-media audio {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .empty-posts {
+            text-align: center;
+            color: #888;
+            font-style: italic;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .time-only {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            .time-only {
+                top: 10px;
+                right: 10px;
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💕 表白墙 💕</h1>
+            <p class="subtitle">在这里分享你的心意，让爱传递</p>
+            <button class="admin-btn" onclick="window.location.href='/admin.html'">管理员入口</button>
+        </header>
+
+        <div class="form-container">
+            <div class="form-group">
+                <label for="senderName">你的名字（可匿名）:</label>
+                <input type="text" id="senderName" placeholder="请输入你的名字或昵称">
+            </div>
+            <div class="form-group">
+                <label for="messageContent">想说的话:</label>
+                <textarea id="messageContent" rows="4" placeholder="写下你想表达的话语..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>上传附件:</label>
+                <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileUpload').click()">
+                    <p>点击上传文件或拖拽文件到这里</p>
+                    <p style="font-size: 0.9em; color: #999;">支持任意文件格式，最大 20MB</p>
+                </div>
+                <input type="file" id="fileUpload" class="file-input" onchange="handleFileSelect(event)">
+            </div>
+            <div id="fileInfo"></div>
+            <div id="previewContainer" class="preview-container"></div>
+            <button onclick="submitPost()">发送表白</button>
+        </div>
+
+        <div class="posts-container" id="postsContainer">
+            <!-- 内容将动态插入这里 -->
+        </div>
+    </div>
+
+    <script>
+        // 初始化
+        window.onload = function() {
+            loadAllContent();
+        };
+
+        // 处理文件选择事件
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (file.size > 20 * 1024 * 1024) {
+                alert('文件不能超过20MB！');
+                document.getElementById('fileUpload').value = '';
+                document.getElementById('previewContainer').innerHTML = '';
+                return;
+            }
+
+            document.getElementById('fileInfo').innerHTML = `
+                <div class="file-info">
+                    <p><strong>文件名:</strong> ${file.name}</p>
+                    <p><strong>文件大小:</strong> ${formatFileSize(file.size)}</p>
+                    <p><strong>文件类型:</strong> ${file.type}</p>
+                </div>
+            `;
+
+            const previewContainer = document.getElementById('previewContainer');
+            previewContainer.innerHTML = '';
+
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewContainer.innerHTML = `<img src="${e.target.result}" class="preview-image" alt="预览图片">`;
+                };
+                reader.readAsDataURL(file);
+            } else if (file.type.startsWith('video/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewContainer.innerHTML = `<video controls class="preview-video"><source src="${e.target.result}" type="${file.type}">您的浏览器不支持视频播放。</video>`;
+                };
+                reader.readAsDataURL(file);
+            } else if (file.type.startsWith('audio/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewContainer.innerHTML = `<audio controls class="preview-audio"><source src="${e.target.result}" type="${file.type}">您的浏览器不支持音频播放。</audio>`;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                previewContainer.innerHTML = `
+                    <div style="padding: 20px; background: #f8f9fa; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 3em; margin-bottom: 10px;">📄</div>
+                        <p>文件预览：${file.name}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // 加载所有内容
+        async function loadAllContent() {
+            try {
+                const response = await fetch('/api/posts');
+                const allContent = await response.json();
+                renderAllContent(allContent);
+            } catch (error) {
+                console.error('加载数据失败:', error);
+            }
+        }
+
+        // 渲染所有内容
+        function renderAllContent(content) {
+            const container = document.getElementById('postsContainer');
+            
+            if (content.length === 0) {
+                container.innerHTML = '<div class="empty-posts">还没有内容，快来第一个发布吧！</div>';
+                return;
+            }
+
+            const sortedContent = [...content].sort((a, b) => new Date(b.time) - new Date(a.time));
+            
+            container.innerHTML = sortedContent.map(item => {
+                if (item.type === 'announcement') {
+                    return `
+                        <div class="announcement">
+                            <div class="time-only">${item.time}</div>
+                            <div class="post-title">${item.title}</div>
+                            <div class="post-content">${item.content}</div>
+                            ${item.attachment ? `
+                                <div class="attachment-info">
+                                    <div class="attachment-name">${item.attachment.originalname}</div>
+                                    <div class="attachment-size">${formatFileSize(item.attachment.size)} (${item.attachment.mimetype})</div>
+                                    ${item.attachment.preview === 'image' ? `
+                                        <div class="preview-media">
+                                            <img src="${item.attachment.path}" alt="附件图片" style="max-width: 100%; max-height: 300px; border-radius: 8px;">
+                                        </div>
+                                    ` : item.attachment.preview === 'video' ? `
+                                        <div class="preview-media">
+                                            <video controls style="max-width: 100%; max-height: 300px; border-radius: 8px;">
+                                                <source src="${item.attachment.path}" type="${item.attachment.mimetype}">
+                                                您的浏览器不支持视频播放。
+                                            </video>
+                                        </div>
+                                    ` : item.attachment.preview === 'audio' ? `
+                                        <div class="preview-media">
+                                            <audio controls style="width: 100%;">
+                                                <source src="${item.attachment.path}" type="${item.attachment.mimetype}">
+                                                您的浏览器不支持音频播放。
+                                            </audio>
+                                        </div>
+                                    ` : ''}
+                                    <a href="${item.attachment.path}" target="_blank" class="download-link">📥 点击下载</a>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                } else if (item.type === 'system-post') {
+                    return `
+                        <div class="system-post">
+                            <div class="time-only">${item.time}</div>
+                            <div class="post-header">
+                                <span class="sender-name">🤖 ${item.sender}</span>
+                            </div>
+                            <div class="post-content">${item.content}</div>
+                            ${item.attachment ? `
+                                <div class="attachment-info">
+                                    <div class="attachment-name">${item.attachment.originalname}</div>
+                                    <div class="attachment-size">${formatFileSize(item.attachment.size)} (${item.attachment.mimetype})</div>
+                                    ${item.attachment.preview === 'image' ? `
+                                        <div class="preview-media">
+                                            <img src="${item.attachment.path}" alt="附件图片" style="max-width: 100%; max-height: 300px; border-radius: 8px;">
+                                        </div>
+                                    ` : item.attachment.preview === 'video' ? `
+                                        <div class="preview-media">
+                                            <video controls style="max-width: 100%; max-height: 300px; border-radius: 8px;">
+                                                <source src="${item.attachment.path}" type="${item.attachment.mimetype}">
+                                                您的浏览器不支持视频播放。
+                                            </video>
+                                        </div>
+                                    ` : item.attachment.preview === 'audio' ? `
+                                        <div class="preview-media">
+                                            <audio controls style="width: 100%;">
+                                                <source src="${item.attachment.path}" type="${item.attachment.mimetype}">
+                                                您的浏览器不支持音频播放。
+                                            </audio>
+                                        </div>
+                                    ` : ''}
+                                    <a href="${item.attachment.path}" target="_blank" class="download-link">📥 点击下载</a>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="post">
+                            <div class="time-only">${item.time}</div>
+                            <div class="post-header">
+                                <span class="sender-name">${item.sender}</span>
+                            </div>
+                            <div class="post-content">${item.content}</div>
+                            ${item.attachment ? `
+                                <div class="attachment-info">
+                                    <div class="attachment-name">${item.attachment.originalname}</div>
+                                    <div class="attachment-size">${formatFileSize(item.attachment.size)} (${item.attachment.mimetype})</div>
+                                    ${item.attachment.preview === 'image' ? `
+                                        <div class="preview-media">
+                                            <img src="${item.attachment.path}" alt="附件图片" style="max-width: 100%; max-height: 300px; border-radius: 8px;">
+                                        </div>
+                                    ` : item.attachment.preview === 'video' ? `
+                                        <div class="preview-media">
+                                            <video controls style="max-width: 100%; max-height: 300px; border-radius: 8px;">
+                                                <source src="${item.attachment.path}" type="${item.attachment.mimetype}">
+                                                您的浏览器不支持视频播放。
+                                            </video>
+                                        </div>
+                                    ` : item.attachment.preview === 'audio' ? `
+                                        <div class="preview-media">
+                                            <audio controls style="width: 100%;">
+                                                <source src="${item.attachment.path}" type="${item.attachment.mimetype}">
+                                                您的浏览器不支持音频播放。
+                                            </audio>
+                                        </div>
+                                    ` : ''}
+                                    <a href="${item.attachment.path}" target="_blank" class="download-link">📥 点击下载</a>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                }
+            }).join('');
+        }
+
+        // 格式化文件大小
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // 提交表白（带文件）
+        async function submitPost() {
+            const senderInput = document.getElementById('senderName');
+            const messageInput = document.getElementById('messageContent');
+            const fileInput = document.getElementById('fileUpload');
+            
+            const sender = senderInput.value.trim() || '匿名用户';
+            const content = messageInput.value.trim();
+            const file = fileInput.files[0];
+            
+            if (!content) {
+                alert('请输入你想表达的内容！');
+                return;
+            }
+
+            // 防止用户使用系统名称
+            if (sender.toLowerCase() === '系统' || sender.toLowerCase() === 'admin') {
+                alert('不允许使用此名称！');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('sender', sender);
+            formData.append('content', content);
+            if (file) {
+                formData.append('file', file);
+            }
+
+            try {
+                const response = await fetch('/api/posts', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    senderInput.value = '';
+                    messageInput.value = '';
+                    fileInput.value = '';
+                    document.getElementById('fileInfo').innerHTML = '';
+                    document.getElementById('previewContainer').innerHTML = '';
+                    
+                    loadAllContent();
+                    
+                    alert('表白提交成功，等待审核！⏳');
+                } else {
+                    throw new Error('提交失败');
+                }
+            } catch (error) {
+                console.error('提交数据失败:', error);
+                alert('提交失败，请重试！');
+            }
+        }
+    </script>
+</body>
+</html>
