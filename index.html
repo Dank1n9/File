@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>文件存储 · shiorko 内域</title>
-  <!-- 柔和现代的风格，保留原作的警示感，同时提升可读性与美观度 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>文件存储 · shiorko 内域 | 资源存档</title>
+  <!-- Nature 风格：简洁、严谨、衬线字体 + 理性留白，保留学术气质与警示信息（无Emoji） -->
   <style>
+    /* ---------- RESET & 基础 Nature 调色板 ---------- */
     * {
       margin: 0;
       padding: 0;
@@ -13,372 +14,571 @@
     }
 
     body {
-      background: linear-gradient(145deg, #f0f4fa 0%, #e6ecf5 100%);
-      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
-      margin: 0;
-      color: #1e293b;
+      background: #fafaf9;   /* Nature 常用暖白基色 */
+      font-family: 'Georgia', 'Times New Roman', Times, serif;
+      color: #1e2a32;
+      line-height: 1.5;
+      padding: 2rem 1rem;
     }
 
+    /* 主容器 — 类似期刊文章布局，最大宽度舒适，两侧留白 */
     .card {
-      max-width: 780px;
-      width: 100%;
-      background: rgba(255,255,255,0.75);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-radius: 42px;
-      box-shadow: 
-        0 25px 50px -12px rgba(0,0,0,0.2),
-        inset 0 1px 2px rgba(255,255,255,0.8);
-      border: 1px solid rgba(255,255,255,0.6);
-      overflow: hidden;
-      transition: all 0.2s ease;
+      max-width: 1080px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 0;      /* 直角为主，仅微圆角保持现代感 */
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e9ecef;
+      transition: none;
     }
 
     .inner {
-      padding: 2.8rem 2.8rem 2rem 2.8rem;
+      padding: 3rem 2.8rem 2.5rem;
     }
 
-    /* 醒目的头部 — 融合了原版 “你怎么到这来了？” 的意外感 */
+    /* ---------- 标题区域 — 严谨且克制 ---------- */
     .title-block {
-      text-align: center;
+      border-bottom: 2px solid #2c7da0;   /* 学术深蓝绿，Nature 常用强调色 */
       margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      text-align: left;
     }
 
     .title-block h1 {
-      font-size: 3.2rem;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      background: linear-gradient(130deg, #1e2b3a, #1e3b4a);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      display: inline-block;
-      padding: 0 1rem 0.5rem;
-      border-bottom: 3px dashed #94a3b8;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      font-weight: 500;
+      font-size: 2.3rem;
+      letter-spacing: -0.01em;
+      color: #1f3b4c;
+      margin: 0 0 0.5rem 0;
+      background: none;
+      -webkit-text-fill-color: #1f3b4c;
+      border-bottom: none;
+      padding: 0;
     }
 
     .title-block .sub-head {
-      font-size: 1.2rem;
-      color: #475569;
-      margin-top: 0.5rem;
-      font-weight: 400;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
+      gap: 1rem;
       flex-wrap: wrap;
+      margin-top: 0.6rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      color: #4a627a;
     }
 
     .title-block .sub-head span {
-      background: #d9e2ef;
-      padding: 0.25rem 1rem;
-      border-radius: 40px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: #1e3a5f;
-      border: 1px solid #b7c9e2;
+      background: #f2f4f8;
+      padding: 0.2rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 450;
+      color: #2c5a74;
+      border: 1px solid #e2e8f0;
+      letter-spacing: normal;
     }
 
-    /* 主要内容卡片区 — 类似柔和的中性面板 */
+    /* ---------- 主内容面板 — 纯白卡片，干净无炫光 ---------- */
     .message-panel {
-      background: #ffffffcc;
-      border-radius: 32px;
-      padding: 2.5rem 2rem;
-      backdrop-filter: blur(4px);
-      box-shadow: 0 8px 20px -8px rgba(0,20,30,0.15);
-      border: 1px solid rgba(255,255,255,0.8);
-      margin-bottom: 2.2rem;
+      background: transparent;
+      border-radius: 0;
+      padding: 0;
+      backdrop-filter: none;
+      box-shadow: none;
+      border: none;
+      margin-bottom: 1.5rem;
     }
 
+    /* 引语区域 (intro) */
     .intro-text {
-      font-size: 1.25rem;
-      text-align: center;
-      color: #2c3f5c;
-      font-weight: 400;
-      border-bottom: 2px dotted #b9c9e0;
-      padding-bottom: 1.4rem;
+      font-size: 1.05rem;
+      color: #2c3e4e;
+      border-bottom: 1px solid #e9edf2;
+      padding-bottom: 1.25rem;
       margin-bottom: 1.8rem;
+      font-family: Georgia, 'Times New Roman', serif;
+      line-height: 1.5;
     }
 
     .intro-text strong {
-      background: #f1f6fd;
-      padding: 0.2rem 0.7rem;
-      border-radius: 24px;
+      background: #ecf3f9;
+      padding: 0.1rem 0.4rem;
       font-weight: 600;
-      color: #0f2b45;
+      color: #005a8c;
+      font-family: inherit;
+      border-radius: 6px;
     }
 
+    /* 警示区 — 红而不艳，学术警告风格 (保持醒目但严肃) */
     .warning-sign {
       text-align: center;
-      margin: 1.5rem 0 1.2rem;
+      margin: 1rem 0 1rem;
     }
 
-    .warning-sign .big-red {
-      color: #b91c1c;
-      background: rgba(255, 225, 225, 0.8);
-      font-size: 1.8rem;
-      font-weight: 700;
-      padding: 0.6rem 2rem;
-      border-radius: 60px;
+    .big-red {
+      background: #fff6f5;
+      color: #b13e3e;
+      font-size: 1.1rem;
+      font-weight: 500;
+      font-family: 'Inter', sans-serif;
+      padding: 0.6rem 1.6rem;
+      border-radius: 32px;
       display: inline-block;
-      border: 2px solid #fecaca;
-      backdrop-filter: blur(2px);
-      letter-spacing: 1px;
-      box-shadow: 0 4px 8px rgba(185,28,28,0.1);
+      border: 1px solid #f1cfcf;
+      letter-spacing: 0.3px;
+      backdrop-filter: none;
+      box-shadow: none;
     }
 
-    .rule-box {
-      background: #ecf2fa;
-      border-radius: 28px;
-      padding: 1.8rem 1.5rem;
-      margin: 2rem 0 1.2rem;
-      border-left: 8px solid #3b6e9c;
+    /* 你不应该到这来的 —— 重新设计成 Nature 警示框 (非彩色背景，仅边框) */
+    .unauthorized-block {
+      text-align: center;
+      margin: 1.8rem 0 2rem;
+    }
+    .unauthorized-badge {
+      background: #ffffff;
+      color: #b13e3e;
+      border: 1.5px solid #e0bfbf;
+      padding: 0.6rem 2rem;
+      border-radius: 40px;
       font-size: 1.2rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      letter-spacing: -0.2px;
+      display: inline-block;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    }
+
+    /* rule-box : 用法指南 — 学术说明框，左侧细线 */
+    .rule-box {
+      background: #fefefe;
+      border-radius: 16px;
+      padding: 1.8rem 2rem;
+      margin: 2rem 0 2rem;
+      border: 1px solid #e2e9f0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+
+    .rule-box > div:first-child {
+      text-align: center;
+      font-weight: 500;
+      font-family: 'Inter', sans-serif;
+      font-size: 1.2rem;
+      color: #1e4a6b;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.2px;
     }
 
     .rule-line {
       display: flex;
       align-items: baseline;
-      gap: 0.8rem;
-      flex-wrap: wrap;
       justify-content: center;
-      margin: 1rem 0;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin: 1.2rem 0;
     }
 
-    .url-base {
-      background: #1e2b3c;
-      color: #cbd5e1;
-      font-family: 'JetBrains Mono', 'Fira Code', monospace;
-      font-size: 1.1rem;
-      padding: 0.4rem 1rem;
-      border-radius: 60px;
-      border: 1px solid #2f4057;
+    /* 可复制样式 — 符合 Nature 风格的交互增强 */
+    .copyable-url {
+      background: #f1f5f9;
+      font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 0.95rem;
+      padding: 0.35rem 1rem;
+      border-radius: 28px;
+      color: #1f4e6e;
+      border: 1px solid #dce5ef;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, box-shadow 0.1s;
+      display: inline-block;
+      user-select: none;
+    }
+
+    .copyable-url:hover {
+      background: #e6edf6;
+      border-color: #b9cfeb;
+    }
+
+    .copyable-url:active {
+      background: #d9e3ef;
+      transform: scale(0.98);
     }
 
     .url-highlight {
-      background: #bcd0f0;
-      color: #002856;
-      font-family: monospace;
-      font-weight: 700;
-      font-size: 1.3rem;
-      padding: 0.3rem 1rem;
-      border-radius: 60px;
-      border: 2px dashed #2563eb;
+      background: #eef3fc;
+      font-family: 'SF Mono', monospace;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.35rem 1rem;
+      border-radius: 28px;
+      color: #0f5b8c;
+      border: 1px solid #bed0e6;
+      letter-spacing: 0.2px;
     }
 
     .ext-warning {
-      color: #b91c1c;
-      font-weight: 700;
-      background: #fff0f0;
-      padding: 0.2rem 1.2rem;
-      border-radius: 60px;
-      font-size: 1.1rem;
-      border: 1px solid #f5baba;
-      display: inline-block;
+      background: #fff7eb;
+      color: #b45f2a;
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 0.3rem 1.2rem;
+      border-radius: 30px;
+      border: 1px solid #ffe2bc;
+      font-family: 'Inter', sans-serif;
     }
 
     .signature-note {
-      font-size: 1.5rem;
-      font-weight: 350;
+      font-size: 1rem;
+      font-weight: 450;
       text-align: center;
-      color: #00668c;
-      background: #dcf2fe;
+      background: #f7fafd;
       width: fit-content;
-      margin: 2rem auto 1rem;
-      padding: 0.5rem 2.2rem;
-      border-radius: 100px;
-      border: 2px solid #a3d0f0;
+      margin: 1.2rem auto 0;
+      padding: 0.4rem 1.6rem;
+      border-radius: 60px;
+      border: 1px solid #dce7f0;
+      color: #2c6280;
+      font-family: 'Inter', sans-serif;
     }
 
-    /* 图片展示区 — 优雅居中，保留原图ZM.jpg，并加精致光晕 */
+    /* 图片区域 — 期刊插图风格，中性边框与微阴影 */
     .image-area {
+      margin: 2rem 0 1.8rem;
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin: 1.8rem 0 1rem;
     }
 
     .image-frame {
-      background: #ffffffd6;
-      border-radius: 38px;
-      padding: 0.8rem;
-      box-shadow: 0 20px 30px -12px rgba(0,40,70,0.35);
-      border: 2px solid white;
+      background: #fff;
+      border-radius: 12px;
+      padding: 0.6rem;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
       max-width: 320px;
-      transition: transform 0.2s;
-    }
-
-    .image-frame:hover {
-      transform: scale(1.01);
+      transition: all 0.2s ease;
     }
 
     .image-frame img {
       width: 100%;
       height: auto;
       max-width: 300px;
-      border-radius: 28px;
       display: block;
-      background: #cad9ee; /* 占位背景 */
-      border: 2px solid #edf4ff;
+      border-radius: 8px;
+      background: #f4f9fe;
+      border: 1px solid #edf2f7;
     }
 
     .image-caption {
-      margin-top: 0.4rem;
-      font-size: 0.85rem;
-      color: #446688;
+      margin-top: 0.7rem;
+      font-size: 0.8rem;
+      font-family: 'Inter', sans-serif;
+      color: #6c86a3;
+      text-align: center;
+      letter-spacing: 0.2px;
     }
 
-    /* 底部跳转链接 + 版权 */
+    /* 底部链接和版权 */
     .footer-links {
+      margin-top: 2.5rem;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.8rem;
-      margin-top: 1.2rem;
+      gap: 1rem;
+      border-top: 1px solid #eef2f6;
+      padding-top: 2rem;
     }
 
     .back-link {
-      font-size: 1.3rem;
-      background: #d4e2fc;
-      padding: 0.6rem 2rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      background: transparent;
+      padding: 0.5rem 1.6rem;
       border-radius: 60px;
-      transition: all 0.2s;
-      border: 1px solid #a5c0e8;
-      color: #003a6b;
+      border: 1px solid #cbdde9;
+      color: #2c6280;
       text-decoration: none;
-      font-weight: 550;
-      box-shadow: 0 6px 12px -8px #334e78;
+      font-weight: 500;
+      transition: background 0.15s, border-color 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
     }
 
     .back-link:hover {
-      background: #b6cef0;
-      border-color: #3f73b0;
-      box-shadow: 0 8px 14px -6px #2b4e7a;
+      background: #f2f7fc;
+      border-color: #9bb5cc;
+      color: #004070;
       text-decoration: none;
-      color: #001f3f;
     }
 
     .copyright {
-      font-size: 0.95rem;
-      color: #54799e;
-      border-top: 2px solid #cbd6e6;
-      padding-top: 1.5rem;
-      margin-top: 1.5rem;
-      width: 100%;
-      text-align: center;
-      letter-spacing: 0.3px;
+      font-size: 0.75rem;
+      font-family: 'Inter', sans-serif;
+      color: #8ba0b5;
+      border-top: none;
+      padding-top: 0.3rem;
+      letter-spacing: 0.2px;
+      margin-top: 0.2rem;
     }
 
     .copyright strong {
-      font-weight: 600;
-      color: #1b496b;
+      font-weight: 500;
+      color: #5f7d9c;
     }
 
-    /* 保持原表格式干净，移动端优化 */
-    @media (max-width: 500px) {
+    /* 简洁复制提示 (toast) 无emoji */
+    .copy-toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: #1f3b4c;
+      color: #f0f6fc;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      padding: 0.5rem 1.2rem;
+      border-radius: 32px;
+      opacity: 0;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      pointer-events: none;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+      backdrop-filter: blur(4px);
+      background: #1f3b4ce6;
+    }
+
+    .copy-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* 响应式优化 — 保持学术可读性 */
+    @media (max-width: 750px) {
       .inner {
-        padding: 1.8rem 1.2rem 1.2rem;
+        padding: 2rem 1.5rem;
       }
       .title-block h1 {
-        font-size: 2.2rem;
-      }
-      .warning-sign .big-red {
-        font-size: 1.4rem;
+        font-size: 1.8rem;
       }
       .rule-box {
-        padding: 1.2rem 0.8rem;
+        padding: 1.2rem 1rem;
       }
-      .url-base, .url-highlight {
-        font-size: 0.9rem;
+      .copyable-url, .url-highlight {
+        font-size: 0.85rem;
+        word-break: break-all;
+      }
+      .big-red {
+        font-size: 0.95rem;
+        padding: 0.4rem 1.2rem;
+      }
+      .unauthorized-badge {
+        font-size: 1rem;
+        padding: 0.5rem 1.2rem;
+      }
+      .copy-toast {
+        font-size: 0.75rem;
+        white-space: nowrap;
       }
     }
+
+    @media (max-width: 480px) {
+      .rule-line {
+        flex-direction: column;
+        align-items: center;
+      }
+      .title-block h1 {
+        font-size: 1.5rem;
+      }
+      .inner {
+        padding: 1.6rem 1.2rem;
+      }
+      .copy-toast {
+        white-space: normal;
+        max-width: 85vw;
+        text-align: center;
+        line-height: 1.4;
+      }
+    }
+
+    /* 辅助细节：链接无下划线，优雅打印支持 */
+    a {
+      text-decoration: none;
+    }
+    /* 保持等宽代码风格 */
+    code, .copyable-url, .url-highlight {
+      font-size: 0.9rem;
+    }
   </style>
-  <!-- 优雅的备用字体 -->
+  <!-- 加载现代无衬线字体用于标题和辅助 (Inter) 保留学术干净感 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
 </head>
 <body>
-
 <div class="card">
   <div class="inner">
-    <!-- 头部区域 — 你怎么到这来了？保留原味但更有设计感 -->
+    <!-- 头部区域 — 保留原标题意外感，但更显期刊标题风格 -->
     <div class="title-block">
       <h1>你怎么到这来了？</h1>
       <div class="sub-head">
-        <span>🔒 内部文件分发点</span>
-        <span>📦 shiorko.dpdns.org/static</span>
+        <span>内部文件分发点 · 限定访问</span>
+        <span>shiorko.dpdns.org/static</span>
       </div>
     </div>
 
-    <!-- 主要内容面板 (原本的表格结构已经转为灵活div, 但语义保留) -->
     <div class="message-panel">
-      <!-- 第一段说明 -->
+      <!-- 说明段落 -->
       <div class="intro-text">
-        ⚙️ 这里是 <strong>shiorko.dpdns.org</strong> 的文件提供地址 —— 标准文件从这里发出。
+        这里是 <strong>shiorko.dpdns.org</strong> 的文件提供地址 —— 标准文件从该存储节点发出。
       </div>
 
-      <!-- 红色的醒目提示 (本站不直接提供任何网址) 更强烈 -->
+      <!-- 醒目警示：本站不直接提供任何网址 (Nature 风格警示框，温和但明确) -->
       <div class="warning-sign">
-        <div class="big-red">⛔ 本站不直接提供任何网址 ⛔</div>
+        <div class="big-red">本站不直接提供任何网址</div>
       </div>
 
-      <!-- 你不应该到这来的！ 加强神秘感 -->
-      <div style="text-align: center; margin: 1rem 0 1.6rem;">
-        <span style="background: #0b1f33; color: #c9dbf5; padding: 0.5rem 2.2rem; border-radius: 30px; font-size: 1.4rem; letter-spacing: 1px;">🚷 你不应该到这来的！</span>
+      <!-- 原来内联样式替换为更克制的学术警告块 -->
+      <div class="unauthorized-block">
+        <span class="unauthorized-badge">你不应该到这来的！</span>
       </div>
 
-      <!-- 详细用法： 如果你知道自己在干什么... 使用规则框 -->
+      <!-- 用法说明区域 — 类似期刊的方法部分 -->
       <div class="rule-box">
-        <div style="text-align: center; font-weight: 600; margin-bottom: 1.5rem; font-size: 1.3rem; color: #0c4a6e;">
-          🧭 如果你知道自己在干什么
-        </div>
-
+        <div>如果你知道自己在干什么</div>
         <div class="rule-line">
-          <span class="url-base">file.shiorko.dpdns.org/file/</span>
+          <!-- 可复制的URL基础路径：增加点击复制功能 -->
+          <span class="copyable-url" id="copyableBaseUrl" title="点击复制基础路径" role="button" tabindex="0">file.shiorko.dpdns.org/file/</span>
           <span class="url-highlight">[ 文件名.扩展名 ]</span>
         </div>
-
-        <div style="display: flex; justify-content: center; gap: 0.8rem; flex-wrap: wrap; margin-top: 1rem;">
-          <span class="ext-warning">⚠️ 必须加上文件拓展名，否则 404</span>
+        <div style="display: flex; justify-content: center; gap: 0.8rem; flex-wrap: wrap; margin-top: 0.5rem;">
+          <span class="ext-warning">注意: 必须加上文件拓展名，否则 404 — 资源定位符需完整</span>
         </div>
-
-        <!-- 小提示: 标准文件从这里发出，保留原有风格 和 图片区放在一起更连贯 -->
-        <div style="text-align: center; margin-top: 2rem;">
+        <div style="text-align: center; margin-top: 1.8rem;">
           <div class="signature-note">
-            📀 标准文件从这里发出
+            标准文件从这里发出
           </div>
         </div>
       </div>
 
-      <!-- 原图 ZM.jpg 展示区 (保持链接和图片) 且带有微装饰 -->
+      <!-- 图片区：ZM.jpg 展示，添加类似 Figure 描述 -->
       <div class="image-area">
         <div class="image-frame">
-          <img src="file/ZM.jpg" alt="ZM.jpg — 内部文件示例" onerror="this.style.background='#b4c8e5'; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIiB2aWV3Qm94PSIwIDAgMzAwIDMwMCI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiNiNGM4ZTUiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzFkM2I2MSIgZm9udC1mYW1pbHk9Ik1vbm9zcGFjZSIgZm9udC1zaXplPSIxOCI+Wk0uanBnPC90ZXh0Pjwvc3ZnPg=='">
+          <img src="file/ZM.jpg" alt="ZM.jpg 内部文件示例" onerror="this.style.background='#eef2f9'; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMzAwIDIwMCI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNmMmY2ZmMiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzU0N2U5NCIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsIFRpbWVzLCBzZXJpZiIgZm9udC1zaXplPSIxNiI+Wk0uanBnIOagoeWPluS9nOeUqOS4gOa0vu+8iOWFpemhjeS9v+eUqO+8iTwvdGV4dD48L3N2Zz4='">
         </div>
-        <div class="image-caption"></div>
+        <div class="image-caption">Figure 1 | ZM.jpg  —  内部存储节点示意文件 (验证路径)</div>
       </div>
 
-      <!-- 最底下 “点此跳回主站” 和版权 使用footer处理 -->
+      <!-- 底部跳转与版权 -->
       <div class="footer-links">
-        <a href="https://shiorko.dpdns.org" class="back-link">⬅ 点此跳回主站 dash</a>
-
-        <!-- 底部版权 完全符合要求：© Copyright © 2025-2026 shiorko -->
+        <a href="https://shiorko.dpdns.org" class="back-link">返回主站 · shiorko 控制台</a>
         <div class="copyright">
-          © Copyright © 2025-2026 shiorko
+          © Copyright © 2025-2026 shiorko · 内部存档资源遵循许可协议
         </div>
       </div>
-    </div> <!-- end message-panel -->
+    </div>
+  </div>
+</div>
 
-    <!-- 原表格完全去除，但保留原意：所有信息均在上面体现 -->
-  </div> <!-- end inner -->
-</div> <!-- end card -->
+<!-- 复制功能与轻提示脚本 (无emoji) -->
+<script>
+  (function() {
+    // 获取需要添加复制功能的元素
+    const copyElement = document.getElementById('copyableBaseUrl');
+    if (!copyElement) return;
 
-<!-- 额外的细微说明：保留站点气质，但不再有table冗余 -->
+    // 需要复制的目标文本 (硬编码，与显示一致)
+    const COPY_TEXT = 'file.shiorko.dpdns.org/file/';
+
+    // 创建toast提示元素
+    let toastEl = document.querySelector('.copy-toast');
+    if (!toastEl) {
+      toastEl = document.createElement('div');
+      toastEl.className = 'copy-toast';
+      toastEl.textContent = '已复制到剪贴板';
+      document.body.appendChild(toastEl);
+    }
+
+    let toastTimeout = null;
+    function showMessage(msg) {
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastEl.textContent = msg || '已复制到剪贴板';
+      toastEl.classList.add('show');
+      toastTimeout = setTimeout(() => {
+        toastEl.classList.remove('show');
+      }, 1800);
+    }
+
+    // 核心复制逻辑 (现代 Clipboard API + 降级处理)
+    async function copyToClipboard(text) {
+      // 尝试现代API
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        try {
+          await navigator.clipboard.writeText(text);
+          return true;
+        } catch (err) {
+          console.warn('Clipboard API 失败: ', err);
+          // fallback 降级
+          return fallbackCopy(text);
+        }
+      } else {
+        return fallbackCopy(text);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.top = '-9999px';
+      textarea.style.left = '-9999px';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      textarea.setSelectionRange(0, text.length);
+      let success = false;
+      try {
+        success = document.execCommand('copy');
+      } catch (err) {
+        console.warn('execCommand 复制失败', err);
+      }
+      document.body.removeChild(textarea);
+      return success;
+    }
+
+    // 处理复制操作及反馈
+    function handleCopy(event) {
+      event.stopPropagation();
+      copyToClipboard(COPY_TEXT).then(success => {
+        if (success) {
+          showMessage('已复制: ' + COPY_TEXT);
+          // 增加细微视觉反馈 (临时改变背景)
+          copyElement.style.backgroundColor = '#e0ebf5';
+          setTimeout(() => {
+            copyElement.style.backgroundColor = '';
+          }, 180);
+        } else {
+          showMessage('复制失败，请手动选择复制');
+        }
+      }).catch(() => {
+        showMessage('复制失败，请检查权限');
+      });
+    }
+
+    // 添加点击事件
+    copyElement.addEventListener('click', handleCopy);
+    // 键盘支持：Enter 或 Space 触发复制 (无障碍)
+    copyElement.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleCopy(e);
+      }
+    });
+
+    // 可选：添加轻微的 tooltip 提示（原生title已经提供，额外强化）
+    copyElement.setAttribute('aria-label', '复制基础路径 file.shiorko.dpdns.org/file/');
+  })();
+</script>
 </body>
 </html>
